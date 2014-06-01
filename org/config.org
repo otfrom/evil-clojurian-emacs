@@ -1,0 +1,102 @@
+* The evil clojurian setup
+
+  There are some people out there who through, I'm sure perfectly
+  reasonable though unfathomable, choices of their own have used vi,
+  vim and gvim over the year and feel that they are unable to learn
+  GNU Emacs key bindings. However, they still hear about the wonderful
+  flexibility of The One True Editor and decide that they want to give
+  it a try, but with a helpful guide or translator.
+
+  The attraction to GNU Emacs is often the power of lisp. These people
+  seem to be attracted to lisp by clojure in particular at the
+  moment.
+
+  To this end, please try the following, minimal clojure, cider and
+  evil setup.
+
+  I think my most controversial choice is not including paredit
+  mode. I feel that no editor is complete without it, but then much of
+  this setup doesn't really agree with my opinions.
+
+* evil
+
+  This should set up the most basic vi keybindings.
+
+  #+BEGIN_SRC emacs-lisp
+    (maybe-install-and-require 'evil)
+  #+END_SRC
+
+* company
+
+  Complete Anything or [[http://company-mode.github.io/][company-mode]] seems to be the way to complete
+  things in emacs now.
+  
+  #+BEGIN_SRC emacs-lisp
+    (maybe-install-and-require 'company)
+    (add-hook 'after-init-hook 'global-company-mode)
+  #+END_SRC
+
+* clojure and cider
+
+  clojure-mode can run without cider. This will give you basic syntax
+  highlighting and some extra bells and whistles.
+  
+  #+BEGIN_SRC emacs-lisp
+    (maybe-install-and-require 'clojure-mode)
+  #+END_SRC
+
+  cider manages a clojure sub process and gives you a repl to use and
+  turns emacs into a fully fledged clojure IDE with things like code
+  completion, document lookup and navigation to function definitions.
+
+  #+BEGIN_SRC emacs-lisp
+    (maybe-install-and-require 'cider)
+  #+END_SRC
+
+** cider-mode-hooks
+   
+   There are more things that we'll want that are specific to cider
+   mode and the cider interaction buffer.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+     (add-hook 'cider-interaction-mode-hook 'cider-turn-on-eldoc-mode)
+   #+END_SRC
+
+* lisp hooks
+
+  These are the common lisp hooks we want shared across all lisp
+  modes.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq lisp-hooks (lambda ()
+                       (eldoc-mode +1)
+                       (diminish 'eldoc-mode)))
+  #+END_SRC
+
+** clojure-mode-hook
+   
+   We'll also want to get our lisp-hooks into our clojurey
+   goodness. It would be a shame to not have it here.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'clojure-mode-hook lisp-hooks)
+   #+END_SRC
+
+* magit
+
+  magit is a *fantastic* mode for dealing with git.
+  
+  #+BEGIN_SRC emacs-lisp
+     (maybe-install-and-require 'magit)
+  #+END_SRC
+
+* Make it pretty
+
+  The person who inspired me to write this wanted to use emacs-live,
+  which is fantastic and has so much more than this config. We can use
+  the default cyberpunk-theme though.
+
+  #+BEGIN_SRC emacs-lisp
+    (maybe-install-and-require 'cyberpunk-theme)
+  #+END_SRC

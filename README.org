@@ -1,0 +1,3 @@
+* See config.org
+
+  Everything you want to see is in [[org/config.org][config.org]].
